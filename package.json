@@ -7,7 +7,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "init-db": "node --loader ts-node/esm scripts/init-db.js"
+        "db:init": "node scripts/db-init.js"
     },
     "dependencies": {
         "@babel/parser": "^7.28.4",

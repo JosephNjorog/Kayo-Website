@@ -1,13 +1,27 @@
 {
-    "name": "app",
-    "version": "0.1.0",
+    "name": "kayo-platform",
+    "version": "1.0.0",
     "private": true,
+    "description": "Verifiable Carbon Credits & Supply Chain Platform bringing trust and transparency to agricultural supply chains",
+    "author": "Kayo Platform <info@kayopulse.com>",
+    "homepage": "https://kayopulse.com",
+    "keywords": [
+        "carbon credits",
+        "supply chain",
+        "verification",
+        "agriculture",
+        "sustainability",
+        "blockchain",
+        "dMRV",
+        "transparency"
+    ],
     "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "db:init": "node scripts/db-init.js"
+        "db:init": "node scripts/db-init.js",
+        "vercel-db:init": "node scripts/vercel-db-init.js"
     },
     "dependencies": {
         "@babel/parser": "^7.28.4",

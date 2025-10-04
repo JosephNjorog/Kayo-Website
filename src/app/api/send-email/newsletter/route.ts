@@ -8,10 +8,12 @@ export async function POST(req: NextRequest) {
 
     // Create transporter
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.resend.com',
+      secure: true,
+      port: 465,
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
+        user: 'resend',
+        pass: process.env.RESEND_API_KEY,
       },
     });
 

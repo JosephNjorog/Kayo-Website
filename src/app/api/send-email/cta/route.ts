@@ -4,6 +4,23 @@ import nodemailer from 'nodemailer';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const { name, email, company } = body;
+
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.resend.com',
+      secure: true,
+      port: 465,
+      auth: {
+        user: 'resend',
+        pass: process.env.RESEND_API_KEY,
+      },
+    });uest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
     const { email } = body;
 
     // Create transporter

@@ -23,18 +23,27 @@ export default function Hero() {
 
       {/* Animated Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white/30 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 3}s`
-            }}
-          />
-        ))}
+        {/* Using fixed position values instead of random to avoid hydration errors */}
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '10%', top: '15%', animation: 'float 5s ease-in-out infinite', animationDelay: '0.5s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '25%', top: '35%', animation: 'float 4s ease-in-out infinite', animationDelay: '1s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '45%', top: '20%', animation: 'float 6s ease-in-out infinite', animationDelay: '1.5s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '60%', top: '60%', animation: 'float 5s ease-in-out infinite', animationDelay: '0s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '80%', top: '40%', animation: 'float 7s ease-in-out infinite', animationDelay: '2s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '30%', top: '70%', animation: 'float 4.5s ease-in-out infinite', animationDelay: '0.7s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '70%', top: '80%', animation: 'float 5.5s ease-in-out infinite', animationDelay: '1.2s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '20%', top: '90%', animation: 'float 4s ease-in-out infinite', animationDelay: '1.8s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '90%', top: '30%', animation: 'float 6s ease-in-out infinite', animationDelay: '0.3s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '5%', top: '50%', animation: 'float 5s ease-in-out infinite', animationDelay: '1.5s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '50%', top: '10%', animation: 'float 4.5s ease-in-out infinite', animationDelay: '0.9s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '15%', top: '65%', animation: 'float 5.5s ease-in-out infinite', animationDelay: '1.3s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '35%', top: '85%', animation: 'float 6s ease-in-out infinite', animationDelay: '2.1s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '75%', top: '25%', animation: 'float 4s ease-in-out infinite', animationDelay: '0.6s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '65%', top: '95%', animation: 'float 5s ease-in-out infinite', animationDelay: '1.7s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '95%', top: '55%', animation: 'float 5.5s ease-in-out infinite', animationDelay: '0.8s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '40%', top: '45%', animation: 'float 6.5s ease-in-out infinite', animationDelay: '1.4s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '55%', top: '75%', animation: 'float 4.5s ease-in-out infinite', animationDelay: '0.4s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '85%', top: '5%', animation: 'float 5s ease-in-out infinite', animationDelay: '1.9s' }} />
+        <div className="absolute w-1 h-1 bg-white/30 rounded-full" style={{ left: '1%', top: '1%', animation: 'float 4s ease-in-out infinite', animationDelay: '1.1s' }} />
       </div>
 
       {/* Content with Animations */}

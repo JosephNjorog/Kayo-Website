@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { query, initializeDatabase } from '@/lib/db';
+import { query } from '@/lib/db';
 import { sendNewsletterConfirmation } from '@/lib/email';
-
-// Initialize database tables if they don't exist
-initializeDatabase().catch(console.error);
 
 export async function POST(req: NextRequest) {
   try {

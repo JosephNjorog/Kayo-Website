@@ -1,7 +1,14 @@
 "use client"
 
 import * as React from "react"
-import * as RechartsPrimitive from "recharts"
+import { ResponsiveContainer, Tooltip, Legend } from "recharts"
+
+// Create a namespace to match the old import style
+const RechartsPrimitive = {
+  ResponsiveContainer,
+  Tooltip,
+  Legend
+}
 
 import { cn } from "@/lib/utils"
 

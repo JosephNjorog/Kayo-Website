@@ -23,10 +23,6 @@ const nextConfig: NextConfig = {
         loaders: [LOADER]
       }
     }
-  },
-  eslint: {
-    // Skip ESLint during builds to avoid failing due to lint issues
-    ignoreDuringBuilds: true,
   }
 };
 

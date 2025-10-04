@@ -1,9 +1,25 @@
 // Initialize Database Script
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 
 // Load environment variables
 dotenv.config();
+
+// Check for required environment variables
+function checkRequiredEnvVars() {
+  const required = ['DATABASE_URL'];
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length > 0) {
+    console.error('❌ Missing required environment variables:');
+    missing.forEach(key => console.error(`  - ${key}`));
+    console.error('\nPlease create a .env file with these values. See .env.example for reference.');
+    process.exit(1);
+  }
+  
+  return true;
+}
 
 // Create connection pool
 const pool = new Pool({
@@ -86,6 +102,9 @@ async function initializeDatabase() {
     console.log('✅ Investment inquiries table initialized');
 
     console.log('\n✨ All database tables initialized successfully');
+    
+    // Test email configuration
+    await testEmailConfiguration();
   } catch (error) {
     console.error('❌ Error initializing database:', error);
     throw error;
@@ -95,7 +114,57 @@ async function initializeDatabase() {
   }
 }
 
+// Test email configuration
+async function testEmailConfiguration() {
+  try {
+    console.log('\n📧 Testing email configuration...');
+    
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+      console.warn('⚠️ Email testing skipped: GMAIL_USER or GMAIL_APP_PASSWORD not provided');
+      return;
+    }
+    
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD
+      }
+    });
+    
+    // Verify connection configuration
+    await new Promise((resolve, reject) => {
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.error('❌ Email configuration test failed:', error);
+          if (error.code === 'EAUTH') {
+            console.error(`
+⚠️ Authentication Error: The app password appears to be invalid.
+   
+Please make sure you're using an App Password, not your regular Gmail password:
+1. Visit https://myaccount.google.com/apppasswords
+2. Generate a new app password specifically for this application
+3. Update your .env file with the new password
+`);
+          }
+          reject(error);
+        } else {
+          console.log('✅ Email configuration verified successfully');
+          resolve(success);
+        }
+      });
+    });
+    
+  } catch (error) {
+    console.error('❌ Email configuration test failed:', error);
+    console.warn('⚠️ Form submissions will be saved to the database, but confirmation emails may not be sent');
+  }
+}
+
 // Run initialization
+console.log('🚀 Starting database initialization...');
+checkRequiredEnvVars();
 console.log('🔌 Connecting to database...');
 initializeDatabase()
   .then(() => {

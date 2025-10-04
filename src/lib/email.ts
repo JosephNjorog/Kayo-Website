@@ -1,14 +1,60 @@
 import nodemailer from 'nodemailer';
 
-// Create transporter
+/**
+ * Create and verify email transporter
+ * @returns Nodemailer transporter instance
+ */
 const createTransporter = () => {
-  return nodemailer.createTransport({
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    console.error('Email configuration error: GMAIL_USER or GMAIL_APP_PASSWORD environment variables are missing');
+    throw new Error('Email configuration missing. Please check your .env file.');
+  }
+
+  const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_APP_PASSWORD,
     },
+    debug: process.env.NODE_ENV === 'development',
+    logger: process.env.NODE_ENV === 'development',
   });
+  
+  // Verify connection configuration
+  transporter.verify(function(error, success) {
+    if (error) {
+      console.error('SMTP connection error:', error);
+      
+      // Provide more helpful error information for auth errors
+      if (error instanceof Error && 'code' in error) {
+        if (error.code === 'EAUTH') {
+          console.error('Authentication Error: Invalid username or password');
+          console.error(`
+⚠️ Gmail Authentication Failed:
+- If you have 2-factor authentication enabled (recommended), you MUST use an App Password
+- Visit https://myaccount.google.com/apppasswords to generate an App Password
+- Update your .env file with the generated App Password
+- Make sure your GMAIL_USER is correct and matches the account where you generated the password
+- For more details, see the docs/database.md file
+          `);
+        } else if (error.code === 'ESOCKET') {
+          console.error('Socket Error: Unable to establish connection with Gmail servers');
+        }
+        
+        // Log diagnostic info without revealing full credentials
+        console.error('Auth diagnostic info:', { 
+          user: process.env.GMAIL_USER,
+          passwordLength: process.env.GMAIL_APP_PASSWORD?.length || 0,
+          passwordIsAppPassword: process.env.GMAIL_APP_PASSWORD?.length === 16,
+          environment: process.env.NODE_ENV
+        });
+      }
+    } else {
+      console.log('✅ SMTP server connection verified and ready to send emails');
+    }
+  });
+  
+  return transporter;
 };
 
 // Send email confirmation for newsletter subscription
@@ -48,15 +94,27 @@ export async function sendNewsletterConfirmation(email: string) {
   `;
 
   try {
-    await transporter.sendMail({
-      from: '"Kayo Newsletter" <newsletter@kayopulse.com>',
+    // Use the Gmail user email address as sender
+    const from = `"Kayo Newsletter" <${process.env.GMAIL_USER}>`;
+    console.log(`Sending newsletter confirmation from ${from} to ${email}`);
+    
+    const result = await transporter.sendMail({
+      from: from,
       to: email,
       subject: 'Welcome to Kayo\'s Newsletter',
       html,
     });
+    
+    console.log(`Newsletter confirmation sent: ${result.messageId}`);
     return true;
   } catch (error) {
     console.error('Error sending newsletter confirmation:', error);
+    // Log more detailed information about the error
+    if (error instanceof Error) {
+      console.error(`Error name: ${error.name}, message: ${error.message}`);
+      if ('code' in error) console.error(`Error code: ${(error as any).code}`);
+      if ('response' in error) console.error(`SMTP response: ${(error as any).response}`);
+    }
     return false;
   }
 }
@@ -99,7 +157,7 @@ export async function sendContactConfirmation(name: string, email: string) {
 
   try {
     await transporter.sendMail({
-      from: '"Kayo Contact Team" <contact@kayopulse.com>',
+      from: `"Kayo Contact Team" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Thank You for Contacting Kayo',
       html,
@@ -151,7 +209,7 @@ export async function sendDemoConfirmation(fullName: string, email: string, demo
 
   try {
     await transporter.sendMail({
-      from: '"Kayo Demo Team" <demos@kayopulse.com>',
+      from: `"Kayo Demo Team" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Your Kayo Demo Request Confirmation',
       html,
@@ -219,7 +277,7 @@ export async function sendInvestmentConfirmation(
 
   try {
     await transporter.sendMail({
-      from: '"Kayo Investment Team" <investment@kayopulse.com>',
+      from: `"Kayo Investment Team" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Thank You for Your Interest in Kayo',
       html,

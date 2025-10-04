@@ -101,12 +101,28 @@ src/
 
 ## 🔒 Environment Variables
 
-The following environment variables are required for email functionality:
+Copy the `.env.example` file to create a `.env` file:
 
+```bash
+cp .env.example .env
 ```
+
+Then update with your specific values:
+
+```bash
+# Database Configuration
+DATABASE_URL=postgresql://username:password@hostname:port/database_name
+
+# Email Configuration
 GMAIL_USER=your-email@gmail.com
-GMAIL_APP_PASSWORD=your-app-password
+GMAIL_APP_PASSWORD=your-16-character-app-password
+EMAIL_FROM_NAME=Kayo Platform
+
+# Admin notifications recipient
+ADMIN_EMAIL=your-admin-email@example.com
 ```
+
+See `docs/database.md` for detailed setup instructions, especially for Gmail App Password configuration.
 
 ## 📈 Roadmap
 

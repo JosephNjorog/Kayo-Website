@@ -117,13 +117,46 @@ const createTransporter = () => {
    ADMIN_EMAIL=notifications-recipient@example.com
    ```
 
-2. Initialize the database:
+### Setting Up Gmail App Password
+
+For the email functionality to work correctly, you must use an App Password for your Gmail account, especially if you have 2-Step Verification enabled (which is recommended):
+
+1. Go to your Google Account settings: https://myaccount.google.com/
+2. Select "Security"
+3. Under "Signing in to Google," select "2-Step Verification" (you must have this enabled)
+4. At the bottom of the page, select "App passwords"
+5. Click "Select app" and choose "Other (Custom name)"
+6. Enter a name (e.g., "Kayo Website")
+7. Click "Generate" to get your 16-character app password
+8. Copy this password and use it as the `GMAIL_APP_PASSWORD` in your `.env` file
+
+**Troubleshooting Gmail Authentication:**
+
+If you receive errors like `Invalid login: 535-5.7.8 Username and Password not accepted`, try the following:
+
+1. **Verify app password**: Make sure you're using the 16-character app password and not your regular Gmail password
+2. **Check your username**: Ensure the Gmail username is correct and matches the account where you generated the app password
+3. **Regenerate the app password**: Try creating a new app password if the current one isn't working
+4. **Enable "Less secure apps"**: For non-2FA accounts, you might need to allow "less secure apps" at [Google Account Settings](https://myaccount.google.com/lesssecureapps)
+5. **Check for account restrictions**: Some organizational Gmail accounts might have restrictions on SMTP access
+6. **Verify no copy/paste errors**: Ensure no extra spaces were added when copying the password
+
+**Important Notes:**
+
+- An App Password is a 16-character code that gives a less secure app permission to access your Google Account
+- App passwords can only be created if you have 2-Step Verification enabled
+- Never share or expose this password
+- For production environments, consider using a dedicated email service like SendGrid or Mailchimp
+
+## Database Initialization
+
+1. Initialize the database:
 
    ```bash
    npm run db:init
    ```
 
-3. Build and start the application:
+2. Build and start the application:
 
    ```bash
    npm run build

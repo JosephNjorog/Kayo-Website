@@ -19,44 +19,12 @@ export async function POST(req: NextRequest) {
     // Send confirmation email
     await sendNewsletterConfirmation(email);
 
-    // Email to internal team
-    const internalHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: #10B981; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
-            .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; text-align: center; }
-            .field { margin-bottom: 15px; }
-            .label { font-weight: bold; color: #374151; }
-            .value { color: #6b7280; margin-left: 10px; font-size: 18px; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1 style="margin: 0;">New Newsletter Subscription</h1>
-              <p style="margin: 10px 0 0 0;">Kayo Newsletter</p>
-            </div>
-            <div class="content">
-              <div class="field">
-                <span class="label">Email Address:</span>
-                <div style="margin-top: 12px;">
-                  <span class="value">${email}</span>
-                </div>
-              </div>
-              <p style="color: #6b7280; margin-top: 30px;">
-                This subscriber joined from the newsletter signup section at the bottom of the homepage.
-              </p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
-
-    // Confirmation email to subscriber
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Newsletter error:', error);
+    return NextResponse.json({ error: 'Failed to process newsletter subscription' }, { status: 500 });
+  }
+}
     const userHtml = `
       <!DOCTYPE html>
       <html>
@@ -180,22 +148,6 @@ export async function POST(req: NextRequest) {
         </body>
       </html>
     `;
-
-    // Send internal notification
-    await transporter.sendMail({
-      from: `"Kayo Newsletter" <${process.env.GMAIL_USER}>`,
-      to: 'njorojoe11173@gmail.com',
-      subject: `New Newsletter Subscription - ${email}`,
-      html: internalHtml,
-    });
-
-    // Send welcome email to subscriber
-    await transporter.sendMail({
-      from: `"Kayo Team" <${process.env.GMAIL_USER}>`,
-      to: email,
-      subject: 'Welcome to the Kayo Newsletter! 🎉',
-      html: userHtml,
-    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

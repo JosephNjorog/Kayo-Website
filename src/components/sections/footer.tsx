@@ -2,17 +2,22 @@
 
 import { Linkedin, Twitter, Github, Youtube } from 'lucide-react'
 import { useScrollAnimation } from '@/hooks/use-scroll-animation'
-import { Link } from 'next/link'
+import Link from 'next/link'
 
 export default function Footer() {
+  const { ref: ref1, isVisible: isVisible1 } = useScrollAnimation();
+  const { ref: ref2, isVisible: isVisible2 } = useScrollAnimation();
+  const { ref: ref3, isVisible: isVisible3 } = useScrollAnimation();
+  
   return (
     <footer className="bg-[#1F2937] text-white">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-16">
           {/* Brand Column */}
           <div 
+            ref={ref1}
             className={`transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              isVisible1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
             <h3 className="text-[20px] font-bold mb-4">Kayo</h3>
@@ -41,8 +46,9 @@ export default function Footer() {
 
           {/* Product Column */}
           <div 
+            ref={ref2}
             className={`transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
             style={{ transitionDelay: '100ms' }}
           >
@@ -63,8 +69,9 @@ export default function Footer() {
 
           {/* Company Column */}
           <div 
+            ref={ref3}
             className={`transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              isVisible3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
             style={{ transitionDelay: '200ms' }}
           >

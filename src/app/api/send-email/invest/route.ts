@@ -1,0 +1,220 @@
+import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { name, email, companyFund, investmentRange, investmentTimeline, focusAreas, preferredMeetingTime, additionalComments } = body;
+
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+
+    // Email to internal team
+    const internalHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #3B82F6; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+            .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
+            .field { margin-bottom: 15px; }
+            .label { font-weight: bold; color: #374151; }
+            .value { color: #6b7280; margin-left: 10px; }
+            .badge { display: inline-block; background: #f0fdf4; color: #10b981; padding: 4px 12px; border-radius: 4px; font-size: 14px; margin-right: 8px; margin-bottom: 4px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="margin: 0;">New Investment Inquiry</h1>
+              <p style="margin: 10px 0 0 0;">Kayo Carbon Credit Platform</p>
+            </div>
+            <div class="content">
+              <div class="field">
+                <span class="label">Full Name:</span>
+                <span class="value">${name}</span>
+              </div>
+              <div class="field">
+                <span class="label">Email:</span>
+                <span class="value">${email}</span>
+              </div>
+              ${companyFund ? `<div class="field">
+                <span class="label">Company/Fund:</span>
+                <span class="value">${companyFund}</span>
+              </div>` : ''}
+              <div class="field">
+                <span class="label">Investment Range:</span>
+                <span class="value">${investmentRange}</span>
+              </div>
+              <div class="field">
+                <span class="label">Investment Timeline:</span>
+                <span class="value">${investmentTimeline}</span>
+              </div>
+              <div class="field">
+                <span class="label">Investment Focus Areas:</span><br/>
+                ${focusAreas.map((area: string) => `<span class="badge">${area}</span>`).join('')}
+              </div>
+              <div class="field">
+                <span class="label">Preferred Meeting Time (EAT):</span>
+                <span class="value">${preferredMeetingTime}</span>
+              </div>
+              ${additionalComments ? `<div class="field">
+                <span class="label">Additional Comments:</span>
+                <div style="margin-top: 8px; padding: 12px; background: white; border-radius: 4px; color: #374151;">${additionalComments}</div>
+              </div>` : ''}
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    // Confirmation email to user
+    const userHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #374151; margin: 0; padding: 0; }
+            .container { max-width: 600px; margin: 0 auto; }
+            .header { background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); color: white; padding: 40px 30px; text-align: center; }
+            .logo { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+            .content { background: #ffffff; padding: 40px 30px; }
+            .section { margin-bottom: 30px; }
+            .section-title { font-size: 18px; font-weight: 600; color: #1F2937; margin-bottom: 15px; }
+            .info-box { background: #EFF6FF; border-left: 4px solid #3B82F6; padding: 20px; margin: 20px 0; border-radius: 4px; }
+            .details { background: #F9FAFB; padding: 20px; border-radius: 8px; margin: 15px 0; }
+            .detail-item { padding: 8px 0; border-bottom: 1px solid #E5E7EB; }
+            .detail-item:last-child { border-bottom: none; }
+            .label { font-weight: 600; color: #374151; display: inline-block; width: 150px; }
+            .value { color: #6B7280; }
+            .badge { display: inline-block; background: #3B82F6; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; margin: 4px 4px 4px 0; }
+            .next-steps { background: #F0FDF4; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .next-steps ul { margin: 10px 0; padding-left: 20px; }
+            .next-steps li { margin: 8px 0; color: #1F2937; }
+            .footer { background: #1F2937; color: #9CA3AF; padding: 30px; text-align: center; font-size: 14px; }
+            .footer a { color: #3B82F6; text-decoration: none; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <div class="logo">Kayo</div>
+              <h1 style="margin: 0; font-size: 24px; font-weight: 600;">Investment Inquiry Received</h1>
+            </div>
+            
+            <div class="content">
+              <div class="section">
+                <p style="font-size: 16px; margin: 0 0 20px 0;">Dear ${name},</p>
+                <p style="font-size: 16px; line-height: 1.8; margin: 0;">
+                  Thank you for your interest in investing in Kayo. We're building the digital infrastructure to transform carbon markets, and we're excited to explore this opportunity with you.
+                </p>
+              </div>
+
+              <div class="info-box">
+                <p style="margin: 0; font-weight: 600; color: #1E40AF;">✓ Your investment inquiry has been received</p>
+                <p style="margin: 10px 0 0 0; font-size: 14px; color: #1E3A8A;">
+                  Our investment team will review your inquiry and reach out within 24-48 hours to schedule a detailed discussion.
+                </p>
+              </div>
+
+              <div class="section">
+                <div class="section-title">Your Investment Inquiry Summary:</div>
+                <div class="details">
+                  ${companyFund ? `<div class="detail-item">
+                    <span class="label">Company/Fund:</span>
+                    <span class="value">${companyFund}</span>
+                  </div>` : ''}
+                  <div class="detail-item">
+                    <span class="label">Contact Email:</span>
+                    <span class="value">${email}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Investment Range:</span>
+                    <span class="value">${investmentRange}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Timeline:</span>
+                    <span class="value">${investmentTimeline}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Focus Areas:</span><br/>
+                    <div style="margin-top: 8px;">
+                      ${focusAreas.map((area: string) => `<span class="badge">${area}</span>`).join('')}
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Preferred Time:</span>
+                    <span class="value">${preferredMeetingTime}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="next-steps">
+                <div class="section-title" style="color: #1F2937; margin-bottom: 10px;">What to Expect Next:</div>
+                <ul style="margin: 0; padding-left: 20px;">
+                  <li>Our investment team will review your inquiry within 24-48 hours</li>
+                  <li>We'll schedule a call to discuss Kayo's vision, traction, and investment opportunity</li>
+                  <li>You'll receive access to our investor deck and detailed financial projections</li>
+                  <li>We'll answer your questions and explore potential partnership structures</li>
+                </ul>
+              </div>
+
+              <div class="section">
+                <p style="font-size: 14px; color: #6B7280; line-height: 1.8;">
+                  If you have any immediate questions or would like to share additional information, please don't hesitate to reach out to our team at <a href="mailto:invest@kayopulse.com" style="color: #3B82F6; text-decoration: none;">invest@kayopulse.com</a>.
+                </p>
+              </div>
+
+              <div style="text-align: center; margin: 30px 0;">
+                <p style="font-size: 16px; margin-bottom: 10px;">We look forward to speaking with you soon!</p>
+                <p style="font-size: 16px; font-weight: 600; color: #1F2937; margin: 0;">The Kayo Investment Team</p>
+              </div>
+            </div>
+
+            <div class="footer">
+              <p style="margin: 0 0 10px 0;">
+                <strong style="color: #fff;">Kayo</strong> - Building the digital infrastructure for verifiable carbon credits
+              </p>
+              <p style="margin: 10px 0;">
+                <a href="https://kayopulse.com/privacy-policy">Privacy Policy</a> | 
+                <a href="https://kayopulse.com/terms">Terms of Service</a>
+              </p>
+              <p style="margin: 10px 0; font-size: 13px;">
+                © ${new Date().getFullYear()} Kayo. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    // Send internal email
+    await transporter.sendMail({
+      from: `"Kayo Investment Inquiries" <${process.env.GMAIL_USER}>`,
+      to: 'njorojoe11173@gmail.com',
+      subject: `New Investment Inquiry from ${name}`,
+      html: internalHtml,
+    });
+
+    // Send confirmation email to user
+    await transporter.sendMail({
+      from: `"Kayo Investment Team" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: 'Your Kayo Investment Inquiry is Confirmed',
+      html: userHtml,
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Email error:', error);
+    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+  }
+}

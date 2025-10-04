@@ -4,7 +4,17 @@ import nodemailer from 'nodemailer';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { fullName, email, organization, role, investmentInterest, budget, timeline, additionalInfo } = body;
+    // Mapping the form fields from invest-modal to variables used in the email template
+    const { 
+      name: fullName, 
+      email, 
+      companyFund: organization, 
+      investmentRange: budget, 
+      investmentTimeline: timeline,
+      focusAreas: investmentInterest,
+      preferredMeetingTime: role,
+      additionalComments: additionalInfo
+    } = body;
 
     // Create transporter
     const transporter = nodemailer.createTransport({
@@ -53,19 +63,19 @@ export async function POST(req: NextRequest) {
                 <span class="value">${email}</span>
               </div>
               <div class="field">
-                <span class="label">Role:</span>
+                <span class="label">Preferred Meeting Time:</span>
                 <span class="value">${role}</span>
               </div>
               <div class="field">
-                <span class="label">Investment Interest:</span>
-                <span class="value">${investmentInterest}</span>
+                <span class="label">Focus Areas:</span>
+                <span class="value">${Array.isArray(investmentInterest) ? investmentInterest.join(', ') : investmentInterest}</span>
               </div>
               <div class="field">
-                <span class="label">Budget Range:</span>
+                <span class="label">Investment Range:</span>
                 <span class="value">${budget}</span>
               </div>
               <div class="field">
-                <span class="label">Timeline:</span>
+                <span class="label">Investment Timeline:</span>
                 <span class="value">${timeline}</span>
               </div>
               ${additionalInfo ? `
@@ -112,9 +122,9 @@ export async function POST(req: NextRequest) {
               
               <p>Here's a summary of the information you provided:</p>
               <ul>
-                <li><strong>Investment Interest:</strong> ${investmentInterest}</li>
-                <li><strong>Budget Range:</strong> ${budget}</li>
-                <li><strong>Timeline:</strong> ${timeline}</li>
+                <li><strong>Focus Areas:</strong> ${Array.isArray(investmentInterest) ? investmentInterest.join(', ') : investmentInterest}</li>
+                <li><strong>Investment Range:</strong> ${budget}</li>
+                <li><strong>Investment Timeline:</strong> ${timeline}</li>
               </ul>
               
               <p>In the meantime, if you have any urgent questions, please don't hesitate to reply to this email.</p>

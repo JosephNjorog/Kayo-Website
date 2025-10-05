@@ -13,7 +13,10 @@ const stakeholders = [
       "Real-time monitoring dashboards",
       "Automated reporting systems",
       "Enhanced credibility with verified data"
-    ]
+    ],
+    cta: "Schedule Project Demo",
+    ctaType: "demo",
+    ctaParam: "project-developers"
   },
   {
     label: "FOR CORPORATES",
@@ -24,7 +27,10 @@ const stakeholders = [
       "Track supply chain sustainability",
       "Meet ESG reporting requirements",
       "Access transparent audit trails"
-    ]
+    ],
+    cta: "Request ESG Solution",
+    ctaType: "demo",
+    ctaParam: "corporate-esg"
   },
   {
     label: "FOR AUDITORS",
@@ -35,7 +41,10 @@ const stakeholders = [
       "Standardized verification protocols",
       "Immutable documentation",
       "Reduced audit time and costs"
-    ]
+    ],
+    cta: "See Verification Tools",
+    ctaType: "demo",
+    ctaParam: "auditor-tools"
   },
   {
     label: "FOR AGRICULTURAL AGGREGATORS",
@@ -46,7 +55,10 @@ const stakeholders = [
       "Carbon credit aggregation tools",
       "Smallholder farmer inclusion",
       "Complete supply chain visibility"
-    ]
+    ],
+    cta: "Explore Aggregation Platform",
+    ctaType: "demo",
+    ctaParam: "agriculture"
   }
 ]
 

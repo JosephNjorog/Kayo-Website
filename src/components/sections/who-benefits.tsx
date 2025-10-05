@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from 'react'
 import { Check } from 'lucide-react'
 import { useScrollAnimation } from '@/hooks/use-scroll-animation'
+import BookDemoModal from '@/components/modals/book-demo-modal'
 
 const stakeholders = [
   {
@@ -63,8 +65,16 @@ const stakeholders = [
 ]
 
 export default function WhoBenefits() {
+  const [isBookDemoOpen, setIsBookDemoOpen] = useState(false)
+  const [currentStakeholder, setCurrentStakeholder] = useState('')
+  
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation()
   const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation()
+  
+  const handleOpenModal = (stakeholderParam: string) => {
+    setCurrentStakeholder(stakeholderParam)
+    setIsBookDemoOpen(true)
+  }
 
   return (
     <section className="bg-[#f9fafb] py-20 md:py-32" id="use-cases">
@@ -124,8 +134,11 @@ export default function WhoBenefits() {
                     ))}
                   </ul>
                   
-                  <button className="text-[#3dd9d9] text-[14px] font-semibold border border-[#3dd9d9] px-6 py-2.5 rounded-md hover:bg-[#3dd9d9] hover:text-white hover:scale-105 transition-all duration-300">
-                    Book Consultation
+                  <button 
+                    onClick={() => handleOpenModal(stakeholder.ctaParam)}
+                    className="text-[#3dd9d9] text-[14px] font-semibold border border-[#3dd9d9] px-6 py-2.5 rounded-md hover:bg-[#3dd9d9] hover:text-white hover:scale-105 transition-all duration-300"
+                  >
+                    {stakeholder.cta || "Book Consultation"}
                   </button>
                 </div>
               </div>
@@ -133,6 +146,13 @@ export default function WhoBenefits() {
           ))}
         </div>
       </div>
+      
+      {/* Book Demo Modal */}
+      <BookDemoModal 
+        isOpen={isBookDemoOpen} 
+        onClose={() => setIsBookDemoOpen(false)}
+        stakeholderType={currentStakeholder}
+      />
     </section>
   )
 }

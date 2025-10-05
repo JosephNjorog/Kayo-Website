@@ -1,14 +1,43 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, Calendar, Loader2 } from 'lucide-react'
 
 interface BookDemoModalProps {
   isOpen: boolean
   onClose: () => void
+  stakeholderType?: string
 }
 
-export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
+export default function BookDemoModal({ isOpen, onClose, stakeholderType = '' }: BookDemoModalProps) {
+  // Define mappings for stakeholder types to demo options and goals
+  const stakeholderToDemoType = {
+    'project-developers': ['Kayo Dashboard', 'Automated reporting systems'],
+    'corporate-esg': ['Supply Chain Traceability', 'API Integration'],
+    'auditor-tools': ['IoT Sensor Suite', 'Kayo Dashboard'],
+    'agriculture': ['IoT Sensor Suite', 'Supply Chain Traceability']
+  }
+
+  const stakeholderToGoal = {
+    'project-developers': 'Streamline validation processes and implement real-time monitoring dashboards.',
+    'corporate-esg': 'Verify carbon offset authenticity and meet ESG reporting requirements.',
+    'auditor-tools': 'Implement automated data collection and standardized verification protocols.',
+    'agriculture': 'Enable farm-level monitoring and carbon credit aggregation tools.'
+  }
+  
+  const stakeholderToTitle = {
+    'project-developers': 'Schedule Project Demo',
+    'corporate-esg': 'Request ESG Solution',
+    'auditor-tools': 'Book Verification Tools Demo',
+    'agriculture': 'Explore Aggregation Platform'
+  }
+  
+  const stakeholderToDescription = {
+    'project-developers': 'See how our platform streamlines validation and monitoring for carbon project developers.',
+    'corporate-esg': 'Learn how Kayo can help your organization meet ESG reporting requirements with verifiable data.',
+    'auditor-tools': 'Discover how our verification tools can reduce audit time while improving accuracy.',
+    'agriculture': 'Experience our tools for agricultural monitoring and carbon credit aggregation.'
+  }
   const [formData, setFormData] = useState({
     demoType: [] as string[],
     fullName: '',
@@ -18,10 +47,28 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
     role: '',
     goal: '',
     demoDate: '',
+    stakeholderType: stakeholderType,
     consent: false
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  
+  // Update form data when stakeholder type changes
+  useEffect(() => {
+    if (stakeholderType) {
+      // Get demo types for this stakeholder (or empty array if not found)
+      const demoTypesToPreselect = stakeholderToDemoType[stakeholderType as keyof typeof stakeholderToDemoType] || [];
+      // Get goal text for this stakeholder (or empty string if not found)
+      const goalText = stakeholderToGoal[stakeholderType as keyof typeof stakeholderToGoal] || '';
+      
+      setFormData(prev => ({
+        ...prev,
+        demoType: demoTypesToPreselect,
+        goal: goalText,
+        stakeholderType: stakeholderType
+      }));
+    }
+  }, [stakeholderType, isOpen])
 
   const demoOptions = [
     'Kayo Dashboard',
@@ -58,18 +105,18 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
       setSubmitStatus('success')
       setTimeout(() => {
         onClose()
-        // Reset form
-        setFormData({
-          demoType: [],
+        // Reset only personal information fields
+        setFormData(prev => ({
+          ...prev,
           fullName: '',
           organization: '',
           email: '',
           phone: '',
           role: '',
-          goal: '',
           demoDate: '',
           consent: false
-        })
+          // Keep demoType, goal, and stakeholderType as they're auto-filled
+        }))
         setSubmitStatus('idle')
       }, 3000)
     } catch (error) {
@@ -101,10 +148,16 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
             <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
               <Calendar className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-[28px] font-bold text-white">Book Your Demo</h2>
+            <h2 className="text-[28px] font-bold text-white">
+              {stakeholderType && stakeholderToTitle[stakeholderType as keyof typeof stakeholderToTitle] 
+                ? stakeholderToTitle[stakeholderType as keyof typeof stakeholderToTitle] 
+                : 'Book Your Demo'}
+            </h2>
           </div>
           <p className="text-white/90 text-[15px]">
-            Schedule a personalized demonstration of Kayo's carbon credit verification platform.
+            {stakeholderType && stakeholderToDescription[stakeholderType as keyof typeof stakeholderToDescription] 
+              ? stakeholderToDescription[stakeholderType as keyof typeof stakeholderToDescription] 
+              : 'Schedule a personalized demonstration of Kayo\'s carbon credit verification platform.'}
           </p>
         </div>
 

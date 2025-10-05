@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kayo Twitter Image</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1200px;
+      height: 675px;
+      background: linear-gradient(135deg, #0E54A3 0%, #083367 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .content {
+      display: flex;
+      align-items: center;
+      max-width: 90%;
+    }
+    .logo {
+      width: 200px;
+      height: 200px;
+      margin-right: 40px;
+      flex-shrink: 0;
+    }
+    .text {
+      flex: 1;
+    }
+    .brand {
+      font-size: 72px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .tagline {
+      font-size: 36px;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+    .accent {
+      color: #4BC970;
+    }
+    .bg-graphic {
+      position: absolute;
+      bottom: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: rgba(75, 201, 112, 0.2);
+      border-radius: 50%;
+      z-index: -1;
+    }
+    .bg-graphic-2 {
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-graphic"></div>
+  <div class="bg-graphic-2"></div>
+  
+  <div class="content">
+    <svg class="logo" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="512" height="512" rx="100" fill="#ffffff"/>
+      <path d="M142.857 370.285L142.857 141.714L177.143 141.714L177.143 256L302.857 141.714L350.286 141.714L239.429 242.285L359.429 370.285L311.429 370.285L211.429 261.143L177.143 292.571L177.143 370.285L142.857 370.285Z" fill="#0E54A3"/>
+      <path d="M283.429 257.714L318.286 257.714L318.286 292.571L283.429 292.571L283.429 257.714Z" fill="#4BC970"/>
+      <path d="M335.429 257.714L370.286 257.714L370.286 292.571L335.429 292.571L335.429 257.714Z" fill="#4BC970"/>
+    </svg>
+    
+    <div class="text">
+      <div class="brand">KAYO</div>
+      <div class="tagline">Bringing <span class="accent">trust</span> and <span class="accent">transparency</span> to carbon credits and agricultural supply chains</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="url(#gradient)"/>
+  
+  <circle cx="1100" cy="730" r="300" fill="#4BC97033" />
+  <circle cx="100" cy="-50" r="150" fill="#FFFFFF0D" />
+  
+  <!-- Logo Area -->
+  <g transform="translate(450, 180)">
+    <rect width="100" height="100" rx="20" fill="white" />
+    <path d="M29.0172 74.0572V29.9428H37.4286V51.2L60.5714 29.9428H70.0572L49.8857 48.4571L71.8857 74.0572H62.2857L44.2857 52.2286H37.4286V74.0572H29.0172Z" fill="#0E54A3"/>
+    <rect x="56.6857" y="51.5428" width="7" height="7" fill="#4BC970"/>
+    <rect x="67.0857" y="51.5428" width="7" height="7" fill="#4BC970"/>
+  </g>
+  
+  <text x="570" y="200" font-family="Arial, sans-serif" font-weight="700" font-size="64" fill="white">KAYO</text>
+  
+  <text x="600" y="300" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">Verifiable Carbon Credits &amp; Supply Chain Platform</text>
+  
+  <!-- Features -->
+  <g transform="translate(300, 400)">
+    <rect width="180" height="100" rx="8" fill="#FFFFFF1A"/>
+    <text x="90" y="40" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">🌱</text>
+    <text x="90" y="70" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="white">Carbon Credit Verification</text>
+  </g>
+  
+  <g transform="translate(510, 400)">
+    <rect width="180" height="100" rx="8" fill="#FFFFFF1A"/>
+    <text x="90" y="40" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">📊</text>
+    <text x="90" y="70" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="white">Digital MRV</text>
+  </g>
+  
+  <g transform="translate(720, 400)">
+    <rect width="180" height="100" rx="8" fill="#FFFFFF1A"/>
+    <text x="90" y="40" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">🔄</text>
+    <text x="90" y="70" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="white">Supply Chain Traceability</text>
+  </g>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0E54A3"/>
+      <stop offset="100%" stop-color="#083367"/>
+    </linearGradient>
+  </defs>
+</svg>
